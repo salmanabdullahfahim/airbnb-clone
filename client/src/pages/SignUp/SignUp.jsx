@@ -19,6 +19,54 @@ const SignUp = () => {
     updateUserProfile,
   } = useContext(AuthContext);
 
+  //handlesubmit
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const name = event.target.name.value;
+    const email = event.target.email.value;
+    const password = event.target.password.value;
+    const image = event.target.image.files[0];
+
+    const formData = new FormData();
+    formData.append("image", image);
+
+    const url = `https://api.imgbb.com/1/upload?key=${
+      import.meta.env.VITE_IMGBB_KEY
+    }`;
+
+    fetch(url, {
+      method: "POST",
+      body: formData,
+    })
+      .then((res) => res.json())
+      .then((imageData) => {
+        const imageUrl = imageData.data.display_url;
+
+        createUser(email, password)
+          .then((result) => {
+            updateUserProfile(name, imageUrl)
+              .then((result) => {
+                navigate(from, { replace: true });
+              })
+              .catch((err) => {
+                setLoading(false);
+                console.log(err.message);
+                toast.error(err.message);
+              });
+          })
+          .catch((err) => {
+            setLoading(false);
+            console.log(err.message);
+            toast.error(err.message);
+          });
+      })
+      .catch((err) => {
+        setLoading(false);
+        console.log(err.message);
+        toast.error(err.message);
+      });
+  };
   //handle google Sign in
   const handleGoogleSignin = () => {
     signInWithGoogle()
@@ -41,6 +89,7 @@ const SignUp = () => {
           <p className="text-sm text-gray-400">Welcome to AirCNC</p>
         </div>
         <form
+          onSubmit={handleSubmit}
           noValidate=""
           action=""
           className="space-y-6 ng-untouched ng-pristine ng-valid"
