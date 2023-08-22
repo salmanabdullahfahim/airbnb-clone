@@ -10,7 +10,6 @@ const Rooms = () => {
   const [rooms, setRooms] = useState([]);
   const [params, setParams] = useSearchParams();
   const category = params.get("category");
-  console.log(category);
 
   const [loading, setLoading] = useState(false);
   useEffect(() => {
