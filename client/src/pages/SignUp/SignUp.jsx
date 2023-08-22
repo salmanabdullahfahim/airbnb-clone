@@ -47,7 +47,7 @@ const SignUp = () => {
           .then((result) => {
             toast.success("Register Success!");
             updateUserProfile(name, imageUrl)
-              .then((result) => {
+              .then(() => {
                 navigate(from, { replace: true });
               })
               .catch((err) => {
