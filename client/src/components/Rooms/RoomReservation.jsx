@@ -13,8 +13,9 @@ const RoomReservation = () => {
       <DatePicker />
       <hr />
       <div className="p-4">
-        <Button label="submit"></Button>
+        <Button label="Reserve"></Button>
       </div>
+      <hr />
       <div className="p-4 flex flex-row items-center justify-between font-semibold text-lg">
         <div>Total</div>
         <div>$ 300</div>
