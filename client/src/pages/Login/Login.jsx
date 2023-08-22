@@ -17,6 +17,23 @@ const Login = () => {
     updateUserProfile,
   } = useContext(AuthContext);
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const email = event.target.email.value;
+    const password = event.target.password.value;
+    signIn(email, password)
+      .then((result) => {
+        console.log(result.user);
+        navigate("/");
+        toast.success("Login successful");
+      })
+      .catch((err) => {
+        setLoading(false);
+        console.log(err.message);
+        toast.error(err.message);
+      });
+  };
+
   const handleGoogleSignin = () => {
     signInWithGoogle()
       .then((result) => {
@@ -40,6 +57,7 @@ const Login = () => {
           </p>
         </div>
         <form
+          onSubmit={handleSubmit}
           noValidate=""
           action=""
           className="space-y-6 ng-untouched ng-pristine ng-valid"
