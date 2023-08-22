@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { TbFidgetSpinner } from "react-icons/tb";
 import { FcGoogle } from "react-icons/fc";
 import { useContext } from "react";
 import { AuthContext } from "../../providers/AuthProvider";
@@ -24,6 +25,7 @@ const Login = () => {
         toast.success("Login successful");
       })
       .catch((err) => {
+        setLoading(false);
         console.log(err.message);
         toast.error(err.message);
       });
@@ -79,7 +81,11 @@ const Login = () => {
               type="submit"
               className="bg-rose-500 w-full rounded-md py-3 text-white"
             >
-              Continue
+              {loading ? (
+                <TbFidgetSpinner className="m-auto animate-spin" size={23} />
+              ) : (
+                "Continue"
+              )}
             </button>
           </div>
         </form>
