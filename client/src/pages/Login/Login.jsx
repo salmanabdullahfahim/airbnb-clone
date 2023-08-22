@@ -4,19 +4,16 @@ import { TbFidgetSpinner } from "react-icons/tb";
 import { FcGoogle } from "react-icons/fc";
 import { useContext } from "react";
 import { AuthContext } from "../../providers/AuthProvider";
+import { useRef } from "react";
 
 const Login = () => {
   const navigate = useNavigate();
-  const {
-    user,
-    loading,
-    setLoading,
-    signIn,
-    signInWithGoogle,
-    logOut,
-    updateUserProfile,
-  } = useContext(AuthContext);
+  const { user, loading, setLoading, signIn, signInWithGoogle, resetPassword } =
+    useContext(AuthContext);
 
+  const emailRef = useRef();
+
+  //handle submit
   const handleSubmit = (event) => {
     event.preventDefault();
     const email = event.target.email.value;
@@ -34,12 +31,28 @@ const Login = () => {
       });
   };
 
+  //handle google Sign in
   const handleGoogleSignin = () => {
     signInWithGoogle()
       .then((result) => {
         console.log(result.user);
         navigate("/");
         toast.success("Login successful");
+      })
+      .catch((err) => {
+        setLoading(false);
+        console.log(err.message);
+        toast.error(err.message);
+      });
+  };
+
+  //reset password
+  const handleReset = () => {
+    const email = emailRef.current.value;
+    resetPassword(email)
+      .then(() => {
+        toast.success("Please check your email for reset link");
+        setLoading(false);
       })
       .catch((err) => {
         setLoading(false);
@@ -68,6 +81,7 @@ const Login = () => {
                 Email address
               </label>
               <input
+                ref={emailRef}
                 type="email"
                 name="email"
                 id="email"
@@ -108,7 +122,10 @@ const Login = () => {
           </div>
         </form>
         <div className="space-y-1">
-          <button className="text-xs hover:underline hover:text-rose-500 text-gray-400">
+          <button
+            onClick={handleReset}
+            className="text-xs hover:underline hover:text-rose-500 text-gray-400"
+          >
             Forgot password?
           </button>
         </div>
