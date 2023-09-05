@@ -5,6 +5,7 @@ import { FcGoogle } from "react-icons/fc";
 import { useContext } from "react";
 import { AuthContext } from "../../providers/AuthProvider";
 import { useRef } from "react";
+import { saveUser } from "../../api/auth";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -46,6 +47,7 @@ const SignUp = () => {
         createUser(email, password)
           .then((result) => {
             toast.success("Register Success!");
+            saveUser(result.user);
             updateUserProfile(name, imageUrl)
               .then(() => {
                 navigate(from, { replace: true });
@@ -73,6 +75,7 @@ const SignUp = () => {
     signInWithGoogle()
       .then((result) => {
         console.log(result.user);
+        saveUser(result.user);
         navigate(from, { replace: true });
         toast.success("Login successful");
       })

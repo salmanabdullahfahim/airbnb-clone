@@ -5,6 +5,7 @@ import { FcGoogle } from "react-icons/fc";
 import { useContext } from "react";
 import { AuthContext } from "../../providers/AuthProvider";
 import { useRef } from "react";
+import { saveUser } from "../../api/auth";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -38,6 +39,7 @@ const Login = () => {
     signInWithGoogle()
       .then((result) => {
         console.log(result.user);
+        saveUser(result.user);
         navigate(from, { replace: true });
         toast.success("Login successful");
       })
