@@ -5,6 +5,7 @@ const AddRoom = () => {
   //handle form submit
   const handleSubmit = (event) => {
     event.preventDefault();
+    console.log("hello from form");
   };
   return (
     <div>
